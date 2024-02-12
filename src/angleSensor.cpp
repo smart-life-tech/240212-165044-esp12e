@@ -8,10 +8,10 @@ const char *password = "YOUR_WIFI_PASSWORD";
 // IFTTT webhook key and event name
 const char *iftttWebhookKey = "bfOh-57I2CvFbJitZqX1gH";
 const char *eventName = "angle_exceeded";
-
+const int angleCompensate = 0;
 // Define pin numbers
 const int angleSensorPin = A0; // Analog pin for angle sensor
-const int relayPin = 4;       // Digital pin for relay control
+const int relayPin = 4;        // Digital pin for relay control
 
 // Define threshold angle
 const float thresholdAngle = 45.0; // Threshold angle in degrees
@@ -22,8 +22,9 @@ float readAngle()
   int sensorValue = analogRead(angleSensorPin);
 
   // Convert analog value to angle (example: linear conversion)
-  float angle = map(sensorValue, 0, 1023, 0, 360);
-
+  // angle = map(sensorValue, 0, 1023, 0, 360);
+  float angle = map(analogRead(A0), 96, 927, -90, 90) + angleCompensate;
+  Serial.println(angle);
   return angle;
 }
 
