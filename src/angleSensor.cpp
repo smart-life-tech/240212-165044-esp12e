@@ -11,7 +11,7 @@ const char *eventName = "angle_exceeded";
 
 // Define pin numbers
 const int angleSensorPin = A0; // Analog pin for angle sensor
-const int relayPin = D1;       // Digital pin for relay control
+const int relayPin = 4;       // Digital pin for relay control
 
 // Define threshold angle
 const float thresholdAngle = 45.0; // Threshold angle in degrees
@@ -83,7 +83,7 @@ void loop()
     digitalWrite(relayPin, HIGH);
 
     // Send message via IFTTT webhook
-    //sendIFTTTMessage();
+    sendIFTTTMessage();
   }
   else
   {
