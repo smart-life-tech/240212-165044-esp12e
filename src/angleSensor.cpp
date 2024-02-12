@@ -83,7 +83,7 @@ void loop()
     digitalWrite(relayPin, HIGH);
 
     // Send message via IFTTT webhook
-    sendIFTTTMessage();
+    //sendIFTTTMessage();
   }
   else
   {
