@@ -15,7 +15,7 @@ const int relayPin = 4;        // Digital pin for relay control
 
 // Define threshold angle
 const float thresholdAngle = 45.0; // Threshold angle in degrees
-
+bool sendOnce = false;
 float readAngle()
 {
   // Read analog value from sensor
@@ -80,16 +80,21 @@ void loop()
   // Check if angle exceeds threshold
   if (angle > thresholdAngle)
   {
-    // Activate relay
-    digitalWrite(relayPin, HIGH);
+    if (sendOnce)
+    {
+      // Activate relay
+      digitalWrite(relayPin, HIGH);
 
-    // Send message via IFTTT webhook
-    sendIFTTTMessage();
+      // Send message via IFTTT webhook
+      sendIFTTTMessage();
+      sendOnce = false;
+    }
   }
   else
   {
     // Deactivate relay
     digitalWrite(relayPin, LOW);
+    sendOnce = false;
   }
 
   delay(1000);
