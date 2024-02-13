@@ -4,7 +4,7 @@
 // Replace these with your WiFi credentials
 const char *ssid = "YOUR_WIFI_SSID";
 const char *password = "YOUR_WIFI_PASSWORD";
-
+const char *message = "Possible electrical pole down. Power has been shut down";
 // IFTTT webhook key and event name
 const char *iftttWebhookKey = "bfOh-57I2CvFbJitZqX1gH";
 const char *eventName = "angle_exceeded";
@@ -23,7 +23,7 @@ float readAngle()
 
   // Convert analog value to angle (example: linear conversion)
   // angle = map(sensorValue, 0, 1023, 0, 360);
-  float angle = map(analogRead(A0), 96, 927, -90, 90) + angleCompensate;
+  float angle = map(sensorValue, 96, 927, -90, 90) + angleCompensate;
   Serial.println(angle);
   return angle;
 }
@@ -32,16 +32,18 @@ void sendIFTTTMessage()
 {
   // Create HTTPClient object
   HTTPClient http;
-  WiFiClient client;
-  // Construct URL with webhook key and event name
-  String url = "http://maker.ifttt.com/trigger/";
-  url += eventName;
-  url += "/with/key/";
+  WiFiClient Client;
+  // Construct JSON data
+  String jsonData = "{\"value1\":\"Possible electrical pole down. Power has been shut down!\"}";
+
+  // Construct URL with webhook key
+  String url = "http://maker.ifttt.com/trigger/sms/with/key/";
   url += iftttWebhookKey;
 
   // Send HTTP POST request
-  http.begin(client, url);
-  int httpResponseCode = http.GET();
+  http.begin(Client, url);
+  http.addHeader("Content-Type", "application/json");
+  int httpResponseCode = http.POST(jsonData);
   if (httpResponseCode > 0)
   {
     Serial.print("IFTTT message sent, response code: ");
