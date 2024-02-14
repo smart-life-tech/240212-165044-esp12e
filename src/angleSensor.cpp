@@ -14,7 +14,7 @@ const int angleSensorPin = A0; // Analog pin for angle sensor
 const int relayPin = 4;        // Digital pin for relay control
 
 // Define threshold angle
-const float thresholdAngle = 45.0; // Threshold angle in degrees
+const float thresholdAngle = -15.0; // Threshold angle in degrees
 bool sendOnce = false;
 float readAngle()
 {
@@ -46,8 +46,9 @@ void sendIFTTTMessage()
   int httpResponseCode = http.POST(jsonData);
   if (httpResponseCode > 0)
   {
-    Serial.print("IFTTT message sent, response code: ");
+    Serial.print("IFTTT message sent, response code: sending another message in the next 30 seconds");
     Serial.println(httpResponseCode);
+    delay(30000);
   }
   else
   {
